@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
 import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
+import { Picker } from "@react-native-picker/picker";
 
 const CoinDetailsScreen = ({ route }) => {
     const { coinId, selectedCurrency } = route.params;
@@ -44,7 +45,9 @@ const CoinDetailsScreen = ({ route }) => {
     return (
         <View style={styles.container}>
             {isCoinDataLoading ? (
-                <Text style={styles.loadingText}>Loading...</Text>
+                <View style={styles.loadingContainer}>
+                    <ActivityIndicator size="large" color="#fff" />
+                </View>
             ) : (
                 <>
                     <View style={styles.imageInfoContainer}>
@@ -87,10 +90,14 @@ const CoinDetailsScreen = ({ route }) => {
                         {coinData?.description.en.split(".")[0] + "."}
                     </Text>
 
-                    {prices && (
+                    {!prices ? (
+                        <View style={styles.loadingContainer}>
+                            <ActivityIndicator size="large" color="#fff" />
+                        </View>
+                    ) : (
                         <>
                             <Text style={styles.chartIntro}>
-                                Coin Price Data for Past 24 Hours
+                                Coin Price Data for Past 24 Hours:
                             </Text>
                             <LineChart
                                 data={{
@@ -158,13 +165,17 @@ const CoinDetailsScreen = ({ route }) => {
 };
 
 const styles = StyleSheet.create({
-    loadingText: {
-        color: "white",
-    },
     container: {
         backgroundColor: "rgb(20, 22, 25)",
         height: "100%",
         padding: 10,
+    },
+    loadingContainer: {
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
     },
     imageInfoContainer: {
         display: "flex",
@@ -184,14 +195,17 @@ const styles = StyleSheet.create({
         fontSize: 16,
     },
     coinIntro: {
+        marginTop: 10,
         color: "white",
+        borderWidth: 1,
+        borderBottomColor: "white",
     },
     otherDetails: {
         color: "white",
     },
     chartIntro: {
         color: "white",
-        marginTop: 25,
+        marginVertical: 25,
     },
 });
 

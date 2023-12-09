@@ -18,6 +18,14 @@ const HomeScreen = () => {
     const [masterData, setMasterData] = useState(null);
     const [selectedCurrency, setSelectedCurrency] = useState("aed");
 
+    const filteredData =
+        masterData &&
+        masterData.filter(
+            (coin) =>
+                coin.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                coin.symbol.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+
     useEffect(() => {
         const retrieveCoinData = async () => {
             try {
@@ -25,6 +33,7 @@ const HomeScreen = () => {
                     "https://api.coingecko.com/api/v3/coins/"
                 );
                 setMasterData(data);
+                console.log(data);
             } catch (ex) {
                 console.log(ex);
             }
@@ -42,13 +51,18 @@ const HomeScreen = () => {
                     selectedCurrency: selectedCurrency,
                 })
             }>
-            <Image
-                style={styles.coinImg}
-                source={{
-                    uri: item.image.small,
-                }}
-            />
-            <Text style={styles.coinItemText}>{item.name}</Text>
+            <View style={styles.coinImgContainer}>
+                <Image
+                    style={styles.coinImg}
+                    source={{
+                        uri: item.image.small,
+                    }}
+                />
+            </View>
+            <Text style={styles.coinPrice}>
+                {item.market_data.current_price[selectedCurrency]}
+            </Text>
+            <Text style={styles.coinName}>{item.name}</Text>
         </TouchableOpacity>
     );
 
@@ -58,12 +72,7 @@ const HomeScreen = () => {
             <View style={styles.searchAndSort}>
                 <View style={styles.inputGroup}>
                     <TextInput
-                        style={[
-                            styles.searchBar,
-                            searchQuery
-                                ? { borderRadius: 25 }
-                                : { borderRadius: 25, marginRight: 0 },
-                        ]}
+                        style={styles.searchBar}
                         placeholder="Search by coin name"
                         value={searchQuery}
                         onChangeText={(text) => setSearchQuery(text)}
@@ -76,17 +85,17 @@ const HomeScreen = () => {
                             <Text style={styles.clearBtnText}>❌</Text>
                         </TouchableOpacity>
                     )}
-                    {/* <Text style={styles.currencyText}>Currency</Text> */}
+
                     <Picker
                         style={styles.currencyPicker}
                         selectedValue={selectedCurrency}
                         onValueChange={(itemValue, itemIndex) =>
                             setSelectedCurrency(itemValue)
                         }
-                        label="Select">
+                        dropdownIconColor="white">
                         {masterData &&
                             Object.keys(
-                                masterData[0]?.market_data.current_price
+                                masterData[0].market_data.current_price
                             ).map((currency) => (
                                 <Picker.Item
                                     label={currency.toUpperCase()}
@@ -97,9 +106,12 @@ const HomeScreen = () => {
                 </View>
             </View>
             <FlatList
-                data={masterData}
+                data={filteredData}
                 renderItem={renderItem}
-                keyExtractor={(item) => item.id}
+                keyExtractor={
+                    (item) =>
+                        item.id ? item.id.toString() : item.symbol.toString() // fallback id if item.id does not exist
+                }
             />
         </View>
     );
@@ -132,41 +144,12 @@ const styles = StyleSheet.create({
         backgroundColor: "white",
         padding: 8,
         flex: 1,
+        borderRadius: 25,
     },
-
     clearBtn: {
         backgroundColor: "rgb(17, 18, 20)",
         borderRadius: 25,
         padding: 8,
-    },
-    clearBtnText: {
-        color: "white",
-    },
-    sortSelectContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        width: "40%",
-    },
-    sortSelectLabel: {
-        color: "white",
-        marginRight: 10,
-    },
-    sortSelect: {
-        backgroundColor: "white",
-        borderWidth: 0,
-        borderBottomWidth: 1,
-        borderColor: "white",
-        borderRadius: 25,
-        padding: 8,
-    },
-    sortSelectText: {
-        color: "white",
-    },
-    sortDropdown: {
-        backgroundColor: "rgb(17, 18, 20)",
-        borderWidth: 1,
-        borderColor: "white",
-        borderRadius: 8,
     },
     coinTableContainer: {
         flex: 1,
@@ -174,7 +157,8 @@ const styles = StyleSheet.create({
         backgroundColor: "",
     },
     coinRow: {
-        flex: 1,
+        display: "flex",
+        width: "100%",
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
@@ -184,22 +168,29 @@ const styles = StyleSheet.create({
         marginBottom: 10,
         padding: 10,
     },
-    coinItemText: {
-        color: "white",
-        fontSize: 16,
+    coinImgContainer: {
+        width: "20%",
     },
     coinImg: {
         height: 50,
         width: 50,
     },
-    currencyText: {
+    coinPrice: {
         color: "white",
+        fontSize: 16,
+        width: "30%",
+        textAlign: "center",
+    },
+    coinName: {
+        textAlign: "right",
+        color: "white",
+        fontSize: 16,
+        width: "25%",
     },
     currencyPicker: {
-        width: "50%",
+        width: "40%",
         color: "white",
     },
-    pickerCurrency: {},
 });
 
 export default HomeScreen;
