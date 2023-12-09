@@ -1,15 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import HomeScreen from "./pages/HomeScreen";
 import CoinDetailsScreen from "./pages/CoinDetailsScreen";
-import axios from "axios";
 
 const Stack = createStackNavigator();
 
 const App = () => {
-    // Define your props
-
     return (
         <NavigationContainer>
             <Stack.Navigator>

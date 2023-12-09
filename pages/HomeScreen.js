@@ -9,13 +9,14 @@ import {
     StyleSheet,
     Image,
 } from "react-native";
+import { Picker } from "@react-native-picker/picker";
 import { useNavigation } from "@react-navigation/native";
 
 const HomeScreen = () => {
     const [searchQuery, setSearchQuery] = useState("");
     const navigation = useNavigation();
     const [masterData, setMasterData] = useState(null);
-    const [selectedCurrency, setSelectedCurrency] = useState("inr");
+    const [selectedCurrency, setSelectedCurrency] = useState("aed");
 
     useEffect(() => {
         const retrieveCoinData = async () => {
@@ -75,6 +76,24 @@ const HomeScreen = () => {
                             <Text style={styles.clearBtnText}>❌</Text>
                         </TouchableOpacity>
                     )}
+                    {/* <Text style={styles.currencyText}>Currency</Text> */}
+                    <Picker
+                        style={styles.currencyPicker}
+                        selectedValue={selectedCurrency}
+                        onValueChange={(itemValue, itemIndex) =>
+                            setSelectedCurrency(itemValue)
+                        }
+                        label="Select">
+                        {masterData &&
+                            Object.keys(
+                                masterData[0]?.market_data.current_price
+                            ).map((currency) => (
+                                <Picker.Item
+                                    label={currency.toUpperCase()}
+                                    value={currency}
+                                />
+                            ))}
+                    </Picker>
                 </View>
             </View>
             <FlatList
@@ -104,7 +123,7 @@ const styles = StyleSheet.create({
     inputGroup: {
         flexDirection: "row",
         alignItems: "center",
-        width: "50%",
+        width: "100",
     },
     searchBar: {
         margin: 10,
@@ -173,6 +192,14 @@ const styles = StyleSheet.create({
         height: 50,
         width: 50,
     },
+    currencyText: {
+        color: "white",
+    },
+    currencyPicker: {
+        width: "50%",
+        color: "white",
+    },
+    pickerCurrency: {},
 });
 
 export default HomeScreen;

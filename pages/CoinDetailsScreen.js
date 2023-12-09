@@ -58,21 +58,26 @@ const CoinDetailsScreen = ({ route }) => {
                             </Text>
                             <Text style={styles.otherDetails}>
                                 Current Price:{" "}
-                                {
+                                {Intl.NumberFormat("en-IN", {
+                                    style: "currency",
+                                    currency: selectedCurrency,
+                                }).format(
                                     coinData?.market_data.current_price[
                                         selectedCurrency
                                     ]
-                                }{" "}
-                                {selectedCurrency.toUpperCase()}
+                                )}
                             </Text>
                             <Text style={styles.otherDetails}>
                                 Market Cap:{" "}
-                                {
+                                {Intl.NumberFormat("en-IN", {
+                                    style: "currency",
+                                    currency: selectedCurrency,
+                                    notation: "compact",
+                                }).format(
                                     coinData?.market_data.market_cap[
                                         selectedCurrency
                                     ]
-                                }{" "}
-                                {selectedCurrency.toUpperCase()}
+                                )}
                             </Text>
                         </View>
                     </View>
@@ -159,7 +164,7 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "rgb(20, 22, 25)",
         height: "100%",
-        padding: 25,
+        padding: 10,
     },
     imageInfoContainer: {
         display: "flex",
