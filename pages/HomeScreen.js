@@ -33,7 +33,6 @@ const HomeScreen = () => {
                     "https://api.coingecko.com/api/v3/coins/"
                 );
                 setMasterData(data);
-                console.log(data);
             } catch (ex) {
                 console.log(ex);
             }
@@ -60,7 +59,7 @@ const HomeScreen = () => {
                 />
             </View>
             <Text style={styles.coinPrice}>
-                {item.market_data.current_price[selectedCurrency]}
+                {item.market_data.current_price[selectedCurrency].toFixed(4)}
             </Text>
             <Text style={styles.coinName}>{item.name}</Text>
         </TouchableOpacity>
@@ -98,6 +97,7 @@ const HomeScreen = () => {
                                 masterData[0].market_data.current_price
                             ).map((currency) => (
                                 <Picker.Item
+                                    key={currency}
                                     label={currency.toUpperCase()}
                                     value={currency}
                                 />
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     inputGroup: {
         flexDirection: "row",
         alignItems: "center",
-        width: "100",
+        width: "100%",
     },
     searchBar: {
         margin: 10,
