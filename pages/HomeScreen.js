@@ -1,3 +1,4 @@
+// .../pages/HomeScreen.js
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -68,42 +69,41 @@ const HomeScreen = () => {
     return (
         <View style={styles.container}>
             <Text style={styles.intro}>Cryptocurrency List</Text>
-            <View style={styles.searchAndSort}>
-                <View style={styles.inputGroup}>
-                    <TextInput
-                        style={styles.searchBar}
-                        placeholder="Search by coin name"
-                        value={searchQuery}
-                        onChangeText={(text) => setSearchQuery(text)}
-                        inputMode="text"
-                    />
-                    {searchQuery && (
-                        <TouchableOpacity
-                            style={styles.clearBtn}
-                            onPress={() => setSearchQuery("")}>
-                            <Text style={styles.clearBtnText}>❌</Text>
-                        </TouchableOpacity>
-                    )}
 
-                    <Picker
-                        style={styles.currencyPicker}
-                        selectedValue={selectedCurrency}
-                        onValueChange={(itemValue, itemIndex) =>
-                            setSelectedCurrency(itemValue)
-                        }
-                        dropdownIconColor="white">
-                        {masterData &&
-                            Object.keys(
-                                masterData[0].market_data.current_price
-                            ).map((currency) => (
-                                <Picker.Item
-                                    key={currency}
-                                    label={currency.toUpperCase()}
-                                    value={currency}
-                                />
-                            ))}
-                    </Picker>
-                </View>
+            <View style={styles.inputGroup}>
+                <TextInput
+                    style={styles.searchBar}
+                    placeholder="Search by coin name"
+                    value={searchQuery}
+                    onChangeText={(text) => setSearchQuery(text)}
+                    inputMode="text"
+                />
+                {searchQuery && (
+                    <TouchableOpacity
+                        style={styles.clearBtn}
+                        onPress={() => setSearchQuery("")}>
+                        <Text style={styles.clearBtnText}>❌</Text>
+                    </TouchableOpacity>
+                )}
+
+                <Picker
+                    style={styles.currencyPicker}
+                    selectedValue={selectedCurrency}
+                    onValueChange={(itemValue, itemIndex) =>
+                        setSelectedCurrency(itemValue)
+                    }
+                    dropdownIconColor="white">
+                    {masterData &&
+                        Object.keys(
+                            masterData[0].market_data.current_price
+                        ).map((currency) => (
+                            <Picker.Item
+                                key={currency}
+                                label={currency.toUpperCase()}
+                                value={currency}
+                            />
+                        ))}
+                </Picker>
             </View>
             <FlatList
                 data={filteredData}
@@ -127,11 +127,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         margin: 10,
     },
-    searchAndSort: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
     inputGroup: {
         flexDirection: "row",
         alignItems: "center",
@@ -150,11 +145,6 @@ const styles = StyleSheet.create({
         backgroundColor: "rgb(17, 18, 20)",
         borderRadius: 25,
         padding: 8,
-    },
-    coinTableContainer: {
-        flex: 1,
-        justifyContent: "center",
-        backgroundColor: "",
     },
     coinRow: {
         display: "flex",

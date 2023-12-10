@@ -1,9 +1,9 @@
+// .../pages/CoinDetailsScreen.js
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, ActivityIndicator } from "react-native";
 import axios from "axios";
 import { Dimensions } from "react-native";
 import { LineChart } from "react-native-chart-kit";
-import { Picker } from "@react-native-picker/picker";
 
 const CoinDetailsScreen = ({ route }) => {
     const { coinId, selectedCurrency } = route.params;
