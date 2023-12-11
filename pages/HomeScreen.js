@@ -154,9 +154,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         borderBottomWidth: 1,
         borderBottomColor: "white",
-        padding: 5,
+        padding: 15,
         marginBottom: 10,
-        padding: 10,
     },
     coinImgContainer: {
         width: "20%",
